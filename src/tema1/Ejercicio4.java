@@ -8,8 +8,7 @@ public class Ejercicio4 {
 
         BufferedOutputStream bos = null;
         String cadena = "Hello World";
-        BufferedInputStream bis;
-
+        BufferedInputStream bis = null;
 
         try {
 
@@ -24,38 +23,11 @@ public class Ejercicio4 {
             if (bos != null) {
                 try {
                     bos.close();
+                    bis.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
-/*
-    private static void leerArchivo() {
-        BufferedInputStream bis = null;
-        BufferedWriter bw = null;
-        BufferedReader br = null;
-        try {
-
-            String linea;
-            bis = new BufferedInputStream(new FileInputStream("in.dat"));
-            br = new BufferedReader(new FileReader("out.dat"));
-            bw = new BufferedWriter(new FileWriter("out.dat"));
-
-            System.out.println(new String(bis.readAllBytes()));
-
-
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
- */
 }
