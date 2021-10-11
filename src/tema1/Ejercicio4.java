@@ -1,33 +1,43 @@
 package tema1;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class Ejercicio4 {
+
+    private static final Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
 
-        BufferedOutputStream bos = null;
-        String cadena = "Hello World";
-        BufferedInputStream bis = null;
+        System.out.println("Nombre de archivo para escribir cadena en bytes:");
+        String nombreArchivoEscritura = sc.nextLine();
 
-        try {
+        System.out.println("Escribe mensaje: ");
+        String mensaje = sc.nextLine();
 
-            bos = new BufferedOutputStream(new FileOutputStream("out.dat"));
-            bis = new BufferedInputStream(new FileInputStream("out.dat"));
+        escribirCadenaEnBytes(nombreArchivoEscritura, mensaje);
 
-            bos.write(cadena.getBytes());
-            System.out.println(Arrays.toString(bis.readAllBytes()));
+        System.out.println("Nombre archivo de bytes para leer en cadena:");
+        String nombreArchivoLectura = sc.nextLine();
+
+        leerBytesPorCadena(nombreArchivoLectura);
+    }
+
+    public static void escribirCadenaEnBytes(String nombreArchivo, String mensaje) {
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(nombreArchivo))) {
+            bos.write(mensaje.getBytes());
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                    bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        }
+    }
+
+    public static void leerBytesPorCadena(String nombreArchivo) {
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(nombreArchivo))) {
+            byte[] b = bis.readAllBytes();
+            String cad = new String(b, java.nio.charset.StandardCharsets.UTF_8);
+            System.out.println(cad);
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
         }
     }
 }
