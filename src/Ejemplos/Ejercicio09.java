@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Ejercicio9 {
+public class Ejercicio09 {
     public static void main(String[] args) {
         String linea;
         File file;

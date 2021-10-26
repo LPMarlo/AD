@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Ejercicio4 {
+public class Ejercicio04 {
 	public static void main(String[] args) {
 		byte[] buffer = new byte[1024*32];
 		Arrays.fill(buffer, Byte.parseByte("1"));

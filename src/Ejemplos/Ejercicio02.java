@@ -1,21 +1,25 @@
 package Ejemplos;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
-public class Ejercicio1 {
+public class Ejercicio02 {
 	public static void main(String[] args) {
-		imprimirFicheroPorLineas("HelloWorld");
+		imprimirFicheroPorLineas("origen.txt");
 	}
 	
 	private static void imprimirFicheroPorLineas(String nombreFichero ) {
 		String linea;
-		try (FileReader flujoLectura = new FileReader(nombreFichero);
-				BufferedReader filtroLectura = new BufferedReader(flujoLectura);){
+		try (BufferedReader filtroLectura = new BufferedReader(new FileReader(nombreFichero));
+				BufferedWriter filtroEscritura = new BufferedWriter(new FileWriter("destino.txt"))){
+			
 			linea = filtroLectura.readLine();
 			while (linea!=null) {
-				System.out.println(linea);
+				filtroEscritura.write(linea);
+				filtroEscritura.newLine();
 				linea=filtroLectura.readLine();
 			}
 		} catch (FileNotFoundException e) {

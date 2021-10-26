@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class Ejercicio5 {
+public class Ejercicio05 {
 	
 	private static Scanner sc = new Scanner(System.in);
 	

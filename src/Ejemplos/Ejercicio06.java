@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Ejercicio6 {
+public class Ejercicio06 {
 
     private static Scanner sc = new Scanner(System.in);
 

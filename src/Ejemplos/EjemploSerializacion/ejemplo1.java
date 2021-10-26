@@ -1,4 +1,4 @@
-package tema1.serializacion;
+package Ejemplos.EjemploSerializacion;
 
 import java.io.*;
 

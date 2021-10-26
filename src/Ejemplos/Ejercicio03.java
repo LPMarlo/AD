@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Ejercicio3 {
+public class Ejercicio03 {
 	
 	private static Scanner teclado = new Scanner(System.in);
 	

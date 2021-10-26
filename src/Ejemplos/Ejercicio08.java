@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Ejercicio8 {
+public class Ejercicio08 {
     public static void main(String[] args) {
 
         String linea;
