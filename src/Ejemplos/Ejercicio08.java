@@ -7,23 +7,16 @@ import java.io.IOException;
 
 public class Ejercicio08 {
     public static void main(String[] args) {
-
-        String linea;
-        File file;
-
-        try (BufferedReader br = new BufferedReader(new FileReader("fichero.txt"))) {
-
-            linea = br.readLine();
-            while (linea != null) {
-                file = new File(linea);
+        try (BufferedReader br = new BufferedReader(new FileReader("ficheros\\fichero.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                File file = new File("ficheros\\"+linea);
 
                 if (!file.exists()) {
                     file.createNewFile();
                 } else {
                     System.out.println("El fichero ya existe.");
                 }
-
-                linea = br.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
