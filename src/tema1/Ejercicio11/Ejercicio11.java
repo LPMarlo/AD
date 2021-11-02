@@ -23,8 +23,8 @@ public class Ejercicio11 {
             while (true) {
                 librosOBJ.add((Libro) ois.readObject());
             }
-        } catch (EOFException e) {
-            System.out.println(" ");
+        } catch (EOFException ignored) {
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -46,29 +46,24 @@ public class Ejercicio11 {
         try (BufferedReader br = new BufferedReader(new FileReader("ficheros\\libros.csv"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                Libro libro;
                 String[] libros_csv = linea.split(";");
                 String[] datosAutor = libros_csv[2].split( " ");
-
                 Autor autor;
-
+                
                 if (datosAutor.length>1) {
                     String[] apellidos = new String[datosAutor.length-1];
                     if (datosAutor.length==2) {
-                        apellidos[0] = datosAutor[1];
+                        apellidos[0] = datosAutor[apellidos.length];
                     } else {
-                        apellidos[0] = datosAutor[1];
-                        apellidos[1] = datosAutor[1];
+                        apellidos[0] = datosAutor[apellidos.length];
+                        apellidos[1] = datosAutor[apellidos.length-1];
                     }
                     autor = new Autor(datosAutor[0], apellidos);
                 } else {
                     autor = new Autor(datosAutor[0]);
                 }
 
-
-                libro = new Libro(libros_csv[0], libros_csv[1], autor, Integer.parseInt(libros_csv[3]));
-
-                librosCSV.add(libro);
+                librosCSV.add(new Libro(libros_csv[0], libros_csv[1], autor, Integer.parseInt(libros_csv[3])));
             }
         } catch (IOException | LibroException e) {
             e.printStackTrace();
@@ -85,6 +80,4 @@ public class Ejercicio11 {
             e.printStackTrace();
         }
     }
-
-
 }
