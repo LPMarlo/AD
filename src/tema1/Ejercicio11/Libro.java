@@ -4,65 +4,54 @@ import java.io.Serializable;
 
 public class Libro implements Serializable {
 
-    private String id;
+    private String ISBN;
     private String nombre;
-    private String autor;
-    private int cantidad;
+    private Autor autor;
+    private int numEjemplares;
 
-    public Libro(String id, String nombre, String autor, int cantidad) {
-        this.id = id;
-        this.nombre = nombre;
+    public Libro(String ISBN, String nombre, Autor autor, int numEjemplares) throws LibroException {
+        setISBN(ISBN);
+        setNombre(nombre);
         this.autor = autor;
-        this.cantidad = cantidad;
+        this.numEjemplares = numEjemplares;
     }
 
-    public String getId() {
-        return id;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) throws LibroException {
+        this.ISBN = ISBN;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws LibroException {
         this.nombre = nombre;
     }
 
-    public String getAutor() {
-        return autor;
+    public int getNumEjemplares() {
+        return numEjemplares;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public String toStringXML() {
-        return "<libro>" +
-                "<nombre id=\""+ id + "\">" + nombre + "</nombre>" +
-                "<autor>" + autor + "</autor>" +
-                "<cantidad>" + cantidad + "</cantidad>" +
-                "</libro>";
+    public void setNumEjemplares(int numEjemplares) {
+        this.numEjemplares = numEjemplares;
     }
 
     @Override
     public String toString() {
-        return "Libro{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", autor='" + autor + '\'' +
-                ", cantidad=" + cantidad +
-                '}';
+        return ISBN + ";" + nombre + ";" +
+                autor.toString() + ";" +
+                numEjemplares + "\n";
     }
 }
