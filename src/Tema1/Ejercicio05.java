@@ -1,4 +1,4 @@
-package tema1;
+package Tema1;
 
 import java.io.*;
 import java.util.Scanner;

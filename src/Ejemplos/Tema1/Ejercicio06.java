@@ -1,4 +1,4 @@
-package Ejemplos;
+package Ejemplos.Tema1;
 
 import java.io.File;
 import java.io.IOException;

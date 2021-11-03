@@ -1,4 +1,4 @@
-package Ejemplos.Ejercicio10;
+package Ejemplos.Tema1.Ejercicio10;
 
 import java.io.*;
 import java.text.ParseException;

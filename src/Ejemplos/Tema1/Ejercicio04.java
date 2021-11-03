@@ -1,4 +1,4 @@
-package Ejemplos;
+package Ejemplos.Tema1;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

@@ -1,7 +1,6 @@
-package Ejemplos.Ejercicio10;
+package Ejemplos.Tema1.Ejercicio10;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
