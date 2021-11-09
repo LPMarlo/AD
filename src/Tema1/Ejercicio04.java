@@ -3,7 +3,7 @@ package Tema1;
 import java.io.*;
 import java.util.Scanner;
 
-// Autor: Marlo Lebrón Pareja
+// Autor: Marlo Lebrï¿½n Pareja
 public class Ejercicio04 {
 
     private static final Scanner sc = new Scanner(System.in);

@@ -11,16 +11,14 @@ import java.util.Arrays;
 
 public class Ejercicio04 {
 	public static void main(String[] args) {
-		byte[] buffer = new byte[1024*32];
-		Arrays.fill(buffer, Byte.parseByte("1"));
+		//byte[] buffer = new byte[1024*32];
+		//Arrays.fill(buffer, Byte.parseByte("1"));
 		BufferedOutputStream bos = null;
 		
 		try {
 			bos = new BufferedOutputStream(new FileOutputStream("ejemplo_buffered.dat"));
 			bos.write("Hola".getBytes());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			if (bos != null) {
