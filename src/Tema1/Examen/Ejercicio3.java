@@ -21,8 +21,8 @@ import java.util.List;
 public class Ejercicio3 {
     public static void main(String[] args) {
         try (BufferedReader brClientes = new BufferedReader(new FileReader("ficheros\\clientes.csv"));
-            BufferedReader brPedidos = new BufferedReader(new FileReader("ficheros\\pedidos.csv"));
-            BufferedReader brProductos = new BufferedReader(new FileReader("ficheros\\productos.csv"));) {
+
+            ) {
 
 
 
@@ -49,6 +49,7 @@ public class Ejercicio3 {
 
                 Element pedidos = document.createElement("pedidos");
 
+                BufferedReader brPedidos = new BufferedReader(new FileReader("ficheros\\pedidos.csv"));
                 String lineaPedidos;
                 while ((lineaPedidos = brPedidos.readLine()) != null) {
                     String[] infoPedidos = lineaPedidos.split(";");
@@ -59,6 +60,7 @@ public class Ejercicio3 {
                         idPedido.appendChild(document.createTextNode(infoPedidos[0]));
 
                         Element productos = document.createElement("productos");
+                        BufferedReader brProductos = new BufferedReader(new FileReader("ficheros\\productos.csv"));
                         String lineaProductos;
                         while ((lineaProductos = brProductos.readLine()) != null) {
                             String[] infoProductos = lineaProductos.split(";");
@@ -68,7 +70,7 @@ public class Ejercicio3 {
                                 Element nombreProducto = document.createElement("nombre");
                                 nombreProducto.appendChild(document.createTextNode(infoProductos[1]));
                                 Element precio = document.createElement("precio");
-                                nombreProducto.appendChild(document.createTextNode(infoProductos[2]));
+                                precio.appendChild(document.createTextNode(infoProductos[2]));
 
                                 producto.appendChild(nombreProducto);
                                 producto.appendChild(precio);

@@ -5,5 +5,15 @@
         <apellido1>Jurado</apellido1>
         <apellido2>Oliver</apellido2>
     </cliente>
-    <pedidos/>
+    <pedidos>
+        <pedido>
+            <idpedido>101</idpedido>
+            <productos>
+                <producto>
+                    <nombre>Queso4.75</nombre>
+                    <precio/>
+                </producto>
+            </productos>
+        </pedido>
+    </pedidos>
 </info-cliente>
