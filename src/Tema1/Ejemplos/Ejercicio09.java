@@ -1,5 +1,7 @@
 package Tema1.Ejemplos;
 
+import Tema1.Ejemplos.Coche;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
