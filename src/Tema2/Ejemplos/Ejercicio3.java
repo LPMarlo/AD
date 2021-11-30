@@ -19,7 +19,7 @@ public class Ejercicio3 {
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/PruebaConexionBD", "root", "");
 
-            String sql = "SELECT email FROM alumnos WHERE id = ?";
+            String sql = "SELECT email FROM pruebaconexionbd.alumnos WHERE id = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             pst.setInt(1, Integer.parseInt(id));
