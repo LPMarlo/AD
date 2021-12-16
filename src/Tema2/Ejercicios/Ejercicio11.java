@@ -4,25 +4,20 @@ import java.sql.*;
 import java.util.Scanner;
 
 /*
-A partir de la tabla ALUMNOS crear las dos tablas facilitadas en este script.
-Incluir los mÃ³dulos que faltan y aÃ±adir una columna a ALUMNOS que sea NUMESC (nÃºmero escolarizaciÃ³n, int(20)) que serÃ¡ clave Ãºnica de valor igual que el ID*2.
-Se pide implementar un programa que muestre al usuario el siguiente menÃº.
+Añadir a la nota matrícula los siguientes campos para permitir mantener un histórico de notas.
+Para ello será necesario incluir en el campo matrícula los siguientes campos:
+- curso: int(4)
+- nota: integer(2,2)
+Actualizar las matrículas para el curo 2020.
 
-Seleccione la opciÃ³n a realizar:
-1. Insertar alumno.
-2. Insertar mÃ³dulo.
-3. Matricular alumno en mÃ³dulo.
-4. Listar los mÃ³dulos de un alumno.
-5. Borrar matrÃ­cula.
-6. Listado de alumnos y matrÃ­culas.
-7. Salir
-
-Para la primera y segunda opciÃ³n, solicitarÃ¡ los datos del alumno/mÃ³dulo por teclado y lo insertarÃ¡, controlando las excepciones (duplicidades).
-Para la tercera solicitarÃ¡ el numesc y el codigo del mÃ³dulo profesional.
-Para Listar los mÃ³dulos pertenecientes a una matrÃ­cula  o para borrar los mÃ³dulos en los que estÃ¡ matriculado un alumno solicitarÃ¡ el numesc.
-Para listar todos los alumnos y matrÃ­culas se implementarÃ¡ la select necesaria y se recorrerÃ¡n todas las filas. NO se harÃ¡ una select dentro de otra.
+Añadir a la clase Ejercicio 10:
+- Actualizar los métodos del Ejercicio10 anterior para que trabajen teniendo en cuenta esta circunstancia
+(matricular alumno, borrar matrícula, listar alumnos).
+- Un método para calificar una nota recibiendo curso, numesc, código de módulo y nota.
+- Un método actualizarCursoMatricula que recibirá numesc y curso que rematriculará al alumno en el curso pasado
+como parámetro de todos aquellos módulos que aún no haya superado.
  */
-public class Ejercicio10 {
+public class Ejercicio11 {
 
     private static final Scanner sc = new Scanner(System.in);
 
@@ -34,12 +29,12 @@ public class Ejercicio10 {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pruebaconexionbd", "root", "");
 
             int opt = 0;
-            while (opt != 7) {
+            while (opt != 9) {
                 showMenu();
                 opt = menu(con);
             }
         } catch (SQLException | NumberFormatException e) {
-            System.out.println("Error. Algo saliÃ³ mal");
+            System.out.println("Error. Algo salió mal");
         } finally {
             if (con != null) {
                 try {
@@ -62,7 +57,9 @@ public class Ejercicio10 {
                 4. Listar los modulos de un alumno.
                 5. Borrar matricula.
                 6. Listado de alumnos y matriculas.
-                7. Salir
+                7. Calificar nota de alumno.
+                8. Actualizar curso de matricula
+                9. Salir
                 """);
     }
 
@@ -82,10 +79,89 @@ public class Ejercicio10 {
             case 4 -> listaModulosDeAlumno(con);
             case 5 -> borrarMatricula(con);
             case 6 -> listaAlumnosYModulos(con);
-            case 7 -> System.out.println("Ha salido con exito.");
+            case 7 -> calificarNota(con);
+            case 8 -> actualizarCursoMatricula(con);
+            case 9 -> System.out.println("Ha salido con exito.");
             default -> System.out.println("Opcion incorrecta.");
         }
         return opt;
+    }
+
+    private static void actualizarCursoMatricula(Connection con) {
+        System.out.println("Curso: ");
+        int curso = Integer.parseInt(sc.nextLine());
+
+        System.out.println("Numero escolar: ");
+        int id = Integer.parseInt(sc.nextLine()) / 2;
+
+        try {
+            if (comprobarIdAlumno(id, con)) {
+
+                // Comprobacion si el alumno ya esta matriculado en el modulo
+                String sql = "SELECT id, codigo, curso, nota FROM pruebaconexionbd.matricula WHERE id=? and curso=? ";
+
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, id);
+                ps.setInt(2, curso-1);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    if (rs.getInt(1) == id && rs.getInt(3) == curso && rs.getInt(4) < 5) {
+                        sql = "INSERT INTO pruebaconexionbd.matricula(ID, CODIGO, curso) VALUES (?, ?, ?)";
+                        PreparedStatement ps2 = con.prepareStatement(sql);
+                        ps2.setInt(1, id);
+                        ps2.setString(2, rs.getString(2));
+                        ps2.setInt(3, curso);
+
+                        ps2.executeUpdate();
+                        ps2.close();
+                    }
+                }
+
+                ps.close();
+
+            } else {
+                System.out.println("Error. No existe un codigo o un numero escolar compatible con los datos introducidos.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void calificarNota(Connection con) {
+
+        System.out.println("Curso: ");
+        int curso = Integer.parseInt(sc.nextLine());
+
+        System.out.println("Numero escolar: ");
+        int id = Integer.parseInt(sc.nextLine()) / 2;
+
+        System.out.println("Codigo modulo: ");
+        String codigo = sc.nextLine();
+
+        System.out.println("Nota: ");
+        int nota = Integer.parseInt(sc.nextLine());
+
+        try {
+            if (comprobarCodigoModulo(codigo, con) && comprobarIdAlumno(id, con)) {
+
+                // Comprobacion si el alumno ya esta matriculado en el modulo
+                String sql = "UPDATE pruebaconexionbd.matricula SET curso=?, nota=? WHERE id=? and CODIGO=? ";
+
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, curso);
+                ps.setInt(2, nota);
+                ps.setInt(3, id);
+                ps.setString(4, codigo);
+
+                ps.executeUpdate();
+                ps.close();
+            } else {
+                System.out.println("Error. No existe un codigo o un numero escolar compatible con los datos introducidos.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -96,7 +172,7 @@ public class Ejercicio10 {
         try {
 
             // Consulta (ordenada por alumno)
-            String sql = "SELECT CONCAT(a.apellido1, ', ', a.nombre) as alumno, modulo.descripcion, a.id FROM pruebaconexionbd.alumnos a LEFT OUTER JOIN pruebaconexionbd.matricula m on a.id = m.ID LEFT JOIN pruebaconexionbd.modulo_profesional modulo on modulo.CODIGO=m.codigo ORDER BY a.id"; //TODO
+            String sql = "SELECT CONCAT(a.apellido1, ', ', a.nombre) as alumno, modulo.descripcion, a.id, m.curso, m.nota FROM pruebaconexionbd.alumnos a LEFT OUTER JOIN pruebaconexionbd.matricula m on a.id = m.ID LEFT JOIN pruebaconexionbd.modulo_profesional modulo on modulo.CODIGO=m.codigo ORDER BY a.id"; //TODO
 
             Statement ps = con.createStatement();
             ResultSet rs = ps.executeQuery(sql);
@@ -110,9 +186,9 @@ public class Ejercicio10 {
                 if (rs.getString(2) != null) {
                     if (id.equals(rs.getString(3))){ // Si es el mismo alumno no se muestra el nombre
                         // Espacios equivalentes a "Alumno: " y nombre
-                        System.out.println("        " + " ".repeat(rs.getString(1).length()) + " | Modulo: " + rs.getString(2));
+                        System.out.println("        " + " ".repeat(rs.getString(1).length()) + " | Modulo: " + rs.getString(2) + " | Curso: " + rs.getString(4) + " | Nota: " + rs.getString(5));
                     } else {
-                        System.out.println("Alumno: " + rs.getString(1) + " | Modulo: " + rs.getString(2));
+                        System.out.println("Alumno: " + rs.getString(1) + " | Modulo: " + rs.getString(2) + " | Curso: " + rs.getString(4) + " | Nota: " + rs.getString(5));
                     }
                 }
 
@@ -131,7 +207,7 @@ public class Ejercicio10 {
     }
 
     /**
-     * AÃ±ade un registro en la tabla matricula.
+     * Añade un registro en la tabla matricula.
      * Se tienen en cuenta si existe el NUMESC y el codigo del modulo.
      * @param con (Conexion)
      */
@@ -144,18 +220,23 @@ public class Ejercicio10 {
         System.out.println("Codigo modulo: ");
         String codigo = sc.nextLine();
 
+        System.out.println("Curso: ");
+        int curso = Integer.parseInt(sc.nextLine());
+
+        // He supuesto que la matriculación es al principio del curso, por ese motivo no se pide la nota
         try {
             if (comprobarCodigoModulo(codigo, con) && comprobarIdAlumno(id, con)) {
 
                 // Comprobacion si el alumno ya esta matriculado en el modulo
-                String sql = "SELECT id FROM pruebaconexionbd.matricula WHERE id=? AND codigo=?";
+                String sql = "SELECT id FROM pruebaconexionbd.matricula WHERE id=? AND codigo=? AND curso =?";
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.setInt(1, id);
                 ps.setString(2, codigo);
+                ps.setInt(3, curso);
                 ResultSet rs = ps.executeQuery();
 
                 if (!rs.next()) {
-                    sql = "INSERT INTO pruebaconexionbd.matricula(id, codigo) VALUES(?, ?)";
+                    sql = "INSERT INTO pruebaconexionbd.matricula(id, codigo, curso) VALUES(?, ?, ?)";
                     PreparedStatement ps2 = con.prepareStatement(sql);
                     ps.setInt(1, id);
                     ps.setString(2, codigo);
@@ -216,15 +297,20 @@ public class Ejercicio10 {
         System.out.println("Codigo modulo: ");
         String codigo = sc.nextLine();
 
+        System.out.println("Curso: ");
+        int curso = Integer.parseInt(sc.nextLine());
+
         try {
             if (comprobarIdAlumno(id, con) && comprobarCodigoModulo(codigo, con)) {
-                String sql = "DELETE FROM pruebaconexionbd.matricula WHERE CODIGO = ? AND id = ?;";
+                String sql = "DELETE FROM pruebaconexionbd.matricula WHERE CODIGO = ? AND id = ? AND curso=?;";
 
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.setInt(1, id);
                 ps.setString(2, codigo);
+                ps.setInt(3, curso);
 
                 ps.executeUpdate();
+                System.out.println("Eliminado con éxito.");
                 ps.close();
             } else {
                 System.out.println("Error. No existe un codigo o un numero escolar compatible con los datos introducidos.");
@@ -235,7 +321,7 @@ public class Ejercicio10 {
     }
 
     /**
-     * AÃ±ade un modulo
+     * Añade un modulo
      * @param con (Conexion)
      */
     private static void insertarModulo(Connection con) {
@@ -266,7 +352,7 @@ public class Ejercicio10 {
     }
 
     /**
-     * AÃ±ade un alumno, con sus datos correspondientes
+     * Añade un alumno, con sus datos correspondientes
      * @param con (Conexion)
      */
     private static void insertarAlumno(Connection con) {
