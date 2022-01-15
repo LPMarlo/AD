@@ -1,4 +1,4 @@
-package Tema2.Ejercicios.Examen;
+package Tema2.Examen;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

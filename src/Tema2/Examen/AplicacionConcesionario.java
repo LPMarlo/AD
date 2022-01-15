@@ -1,4 +1,4 @@
-package Tema2.Ejercicios.Examen;
+package Tema2.Examen;
 
 import java.util.Scanner;
 

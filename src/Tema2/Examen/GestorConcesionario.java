@@ -1,8 +1,7 @@
-package Tema2.Ejercicios.Examen; /**
+package Tema2.Examen; /**
  * 
  */
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.Scanner;
 
