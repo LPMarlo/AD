@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:mysql://localhost:3306/sanidad_externa</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="accdatffinity@localhost" uuid="a800feba-932c-4caa-b620-6e3f4284e943">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/accdatffinity</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
