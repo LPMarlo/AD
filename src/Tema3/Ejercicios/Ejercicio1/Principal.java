@@ -3,6 +3,9 @@ package Tema3.Ejercicios.Ejercicio1;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.query.Predicate;
+import com.db4o.query.QueryComparator;
+
 import java.util.Scanner;
 
 public class Principal {
@@ -131,6 +134,7 @@ public class Principal {
             if (cuenta != null) {
                 persona.setCuenta(cuenta);
                 db.store(persona);
+                db.store(cuenta);
             } else {
                 System.out.println("La cuenta ya existe.");
             }
@@ -238,7 +242,22 @@ public class Principal {
     }
 
     private static void consultarPersonaConDeterminadoSaldo(ObjectContainer db) {
-        //TODO
+        double saldo = solicitarDouble("Saldo: ");
+        ObjectSet<Persona> personas = db.query(new Predicate<>() {
+            @Override
+            public boolean match(Persona persona) {
+                return persona.getSaldo() >= saldo;
+            }
+        }, (QueryComparator<Persona>) (persona, target1) -> Double.compare(persona.getSaldo(), target1.getSaldo()));
+
+        if (personas.size() != 0) {
+            for (Persona persona : personas) {
+                System.out.println(persona);
+            }
+        }
+        else {
+            System.out.println("No se ha encontrado ningún resultado.");
+        }
     }
 
     // CREACIÓN DE OBJETOS

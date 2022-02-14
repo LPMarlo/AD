@@ -2,7 +2,7 @@ package Tema3.Ejercicios.Ejercicio1;
 
 public class Cuenta {
 
-    private int numCuenta;
+    private final int numCuenta;
     private double saldo;
 
     public Cuenta(int numCuenta, double saldo){

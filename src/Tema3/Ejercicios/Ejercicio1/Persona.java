@@ -50,6 +50,10 @@ public class Persona {
         return miCuenta.getNumCuenta();
     }
 
+    public double getSaldo() {
+        return miCuenta.getSaldo();
+    }
+
     @Override
     public String toString() {
         if (miCuenta != null) {
