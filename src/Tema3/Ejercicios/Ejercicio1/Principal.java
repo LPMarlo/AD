@@ -8,6 +8,9 @@ import com.db4o.query.QueryComparator;
 
 import java.util.Scanner;
 
+/**
+ * @author Marlo Lebrón Pareja
+ */
 public class Principal {
 
     private static final String BD_PERSONAS = "ficheros/personas.oo";
